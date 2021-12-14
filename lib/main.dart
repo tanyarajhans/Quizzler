@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -41,14 +41,49 @@ class _QuizPageState extends State<QuizPage> {
   ];
 
   
+  void checkAnswer(bool userResponse){
+    bool correctAnswer=quizBrain.getQuestionAnswer();
+    
+    setState((){
+      if(quizBrain.isFinished()==true){
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+        ).show();
 
+        quizBrain.reset();
+
+        scorekeeper = [];
+      }
+      else{
+      if(correctAnswer==userResponse){
+        
+          scorekeeper.add(
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        }
+      else{
+          setState((){
+            scorekeeper.add(
+              Icon(
+                Icons.close,
+                  color: Colors.red,
+              ),
+            );
+          });
+       }
+      
+      quizBrain.nextQuestion();
+
+       }
+      }); 
+           
+  }
   
-
-  // List<bool> answers = [
-  //   false, true, true
-  // ];
-
-  // Question q1 = Question(q:'You can lead a cow down stairs but not up stairs.', a: false);
 
   @override
   Widget build(BuildContext context) {
@@ -87,30 +122,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer=quizBrain.getQuestionAnswer();
-                if(correctAnswer==true){
-                  setState((){
-                  scorekeeper.add(
-                  Icon(
-                    Icons.check,
-                    color: Colors.green,
-                    ),
-                  );
-                  });
-                }
-                else{
-                  setState((){
-                  scorekeeper.add(
-                  Icon(
-                    Icons.close,
-                    color: Colors.red,
-                    ),
-                  );
-                });
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(true);
                 
               },
             ),
@@ -130,30 +142,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer=quizBrain.getQuestionAnswer();
-                if(correctAnswer=false){
-                  setState((){
-                  scorekeeper.add(
-                  Icon(
-                    Icons.check,
-                    color: Colors.green,
-                    ),
-                  );
-                  });
-                }
-                else{
-                  setState((){
-                  scorekeeper.add(
-                  Icon(
-                    Icons.close,
-                    color: Colors.red,
-                    ),
-                  );
-                 });
-                }
-                setState(() {
-                  quizBrain.nextQuestion();
-                });
+                checkAnswer(false);
               },
             ),
           ),
