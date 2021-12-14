@@ -44,6 +44,10 @@ class _QuizPageState extends State<QuizPage> {
     'A slug\'s blood is green.'
   ];
 
+  List<bool> answers = [
+    false, true, true
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,7 +85,9 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                setState((){
+                bool correctAnswer=answers[questionNumber];
+                if(correctAnswer==true){
+                  setState((){
                   scorekeeper.add(
                   Icon(
                     Icons.check,
@@ -89,7 +95,19 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                   );
                   questionNumber++;
+                  });
+                }
+                else{
+                  setState((){
+                  scorekeeper.add(
+                  Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    ),
+                  );
+                  questionNumber++;
                 });
+                }
               },
             ),
           ),
@@ -108,7 +126,20 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                setState((){
+                bool correctAnswer=answers[questionNumber];
+                if(correctAnswer=false){
+                  setState((){
+                  scorekeeper.add(
+                  Icon(
+                    Icons.check,
+                    color: Colors.green,
+                    ),
+                  );
+                  questionNumber++;
+                  });
+                }
+                else{
+                  setState((){
                   scorekeeper.add(
                   Icon(
                     Icons.close,
@@ -117,6 +148,7 @@ class _QuizPageState extends State<QuizPage> {
                   );
                   questionNumber++;
                 });
+                }
               },
             ),
           ),
